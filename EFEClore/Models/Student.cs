@@ -25,5 +25,6 @@ namespace EFEClore.Models
         public int departmentId { get; set;}
         public Department department { get; set; }
 
+        public ICollection<StudentBook> Books { get; set; }
     }
 }
