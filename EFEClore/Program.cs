@@ -1,37 +1,30 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using EFEClore;
 using EFEClore.Models;
+using System.ComponentModel.DataAnnotations;
 
 Console.WriteLine("Hello, World!");
 
 using var db = new AppDbContext();
 
 //اضافة لقاعدةة البيانات
-//var department = new Department()
-//{
-//    Name = "Ahmed"
-//};
-
-//db.Departments.Add(department);
-//db.SaveChanges();
-
-// تعديل او تعديل الاسم رقم 1
-var department = db.Departments.Find(1);
-
-if (department != null)
+var department = new Department()
 {
-    Console.WriteLine(department.Name);
-
-    //تعديل
-    //department.Name = "Class 1";
-    //db.SaveChanges();
-
-   
-    //حذف 
-    db.Departments.Remove(department);
-    db.SaveChanges();
+    Name = "Ahmed 02",
+    des="1234"
+};
+var context = new ValidationContext(department);
+var errors = new List<ValidationResult>();
+if(!Validator.TryValidateObject(department, context, errors, true))
+{
+foreach(var validationResult in errors)
+    {
+        Console.WriteLine(validationResult);
+    }
 }
 else
 {
-    Console.WriteLine("Nothing");
+    db.Departments.Add(department);
+    db.SaveChanges();
+
 }

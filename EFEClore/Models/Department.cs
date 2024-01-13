@@ -11,7 +11,10 @@ namespace EFEClore.Models
     {
         [Key]
         public int Id { get; set; }
+        [Required(ErrorMessage ="plese enter the Name ")]
         public string Name { get; set; }
+        [MaxLength(5,ErrorMessage ="Max length can't be > 5 chrs")]
+        public string? des {  get; set; }
         public ICollection<Student> Students { get; set; }  
 
 
