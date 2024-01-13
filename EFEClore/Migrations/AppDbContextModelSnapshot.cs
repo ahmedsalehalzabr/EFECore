@@ -43,7 +43,7 @@ namespace EFEClore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Books", (string)null);
+                    b.ToTable("Books");
                 });
 
             modelBuilder.Entity("EFEClore.Models.Department", b =>
@@ -59,11 +59,12 @@ namespace EFEClore.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("des")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Departments", (string)null);
+                    b.ToTable("Departments");
                 });
 
             modelBuilder.Entity("EFEClore.Models.Grade", b =>
@@ -91,7 +92,7 @@ namespace EFEClore.Migrations
                     b.HasIndex("studentId")
                         .IsUnique();
 
-                    b.ToTable("Grades", (string)null);
+                    b.ToTable("Grades");
                 });
 
             modelBuilder.Entity("EFEClore.Models.Student", b =>
@@ -126,7 +127,7 @@ namespace EFEClore.Migrations
 
                     b.HasIndex("departmentId");
 
-                    b.ToTable("Students", (string)null);
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("EFEClore.Models.StudentBook", b =>
@@ -152,7 +153,7 @@ namespace EFEClore.Migrations
 
                     b.HasIndex("studentId");
 
-                    b.ToTable("StudentBooks", (string)null);
+                    b.ToTable("StudentBooks");
                 });
 
             modelBuilder.Entity("EFEClore.Models.Grade", b =>
@@ -160,7 +161,7 @@ namespace EFEClore.Migrations
                     b.HasOne("EFEClore.Models.Student", "student")
                         .WithOne("grade")
                         .HasForeignKey("EFEClore.Models.Grade", "studentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("student");
@@ -171,7 +172,7 @@ namespace EFEClore.Migrations
                     b.HasOne("EFEClore.Models.Department", "department")
                         .WithMany("Students")
                         .HasForeignKey("departmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("department");
@@ -182,13 +183,13 @@ namespace EFEClore.Migrations
                     b.HasOne("EFEClore.Models.Book", "book")
                         .WithMany("Students")
                         .HasForeignKey("bookId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("EFEClore.Models.Student", "student")
                         .WithMany("Books")
                         .HasForeignKey("studentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("book");

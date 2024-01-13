@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFEClore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240112081808_otoRel")]
-    partial class otoRel
+    [Migration("20240113130438_init_db")]
+    partial class init_db
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,30 @@ namespace EFEClore.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("EFEClore.Models.Book", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Author")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Books");
+                });
 
             modelBuilder.Entity("EFEClore.Models.Department", b =>
                 {
@@ -36,6 +60,10 @@ namespace EFEClore.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("des")
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
 
                     b.HasKey("Id");
 
@@ -95,9 +123,40 @@ namespace EFEClore.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("departmentId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("departmentId");
+
                     b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("EFEClore.Models.StudentBook", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("bookId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("getDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("studentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("bookId");
+
+                    b.HasIndex("studentId");
+
+                    b.ToTable("StudentBooks");
                 });
 
             modelBuilder.Entity("EFEClore.Models.Grade", b =>
@@ -105,7 +164,7 @@ namespace EFEClore.Migrations
                     b.HasOne("EFEClore.Models.Student", "student")
                         .WithOne("grade")
                         .HasForeignKey("EFEClore.Models.Grade", "studentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("student");
@@ -113,6 +172,48 @@ namespace EFEClore.Migrations
 
             modelBuilder.Entity("EFEClore.Models.Student", b =>
                 {
+                    b.HasOne("EFEClore.Models.Department", "department")
+                        .WithMany("Students")
+                        .HasForeignKey("departmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("department");
+                });
+
+            modelBuilder.Entity("EFEClore.Models.StudentBook", b =>
+                {
+                    b.HasOne("EFEClore.Models.Book", "book")
+                        .WithMany("Students")
+                        .HasForeignKey("bookId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("EFEClore.Models.Student", "student")
+                        .WithMany("Books")
+                        .HasForeignKey("studentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("book");
+
+                    b.Navigation("student");
+                });
+
+            modelBuilder.Entity("EFEClore.Models.Book", b =>
+                {
+                    b.Navigation("Students");
+                });
+
+            modelBuilder.Entity("EFEClore.Models.Department", b =>
+                {
+                    b.Navigation("Students");
+                });
+
+            modelBuilder.Entity("EFEClore.Models.Student", b =>
+                {
+                    b.Navigation("Books");
+
                     b.Navigation("grade")
                         .IsRequired();
                 });

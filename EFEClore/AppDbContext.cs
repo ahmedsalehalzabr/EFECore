@@ -19,7 +19,28 @@ namespace EFEClore
         public DbSet<Department> Departments { get; set; }
         public DbSet<Grade> Grades { get; set; }
         public DbSet<Book> Books { get; set; }
-        public DbSet<StudentBook> StudentBooks { get; set; } 
+        public DbSet<StudentBook> StudentBooks { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //للتعديل في بعض المقريشن بالاكواد بدل التعديل اليدوي داخل المقريشن
+            //modelBuilder.Entity<Department>()
+            //    .HasMany(p => p.Students)
+            //    .WithOne(c => c.department)
+            //    .OnDelete(DeleteBehavior.Restrict);
+
+            //modelBuilder.Entity<Student>()
+            //   .HasOne(s => s.grade)
+            //   .WithOne(g => g.student)
+            //   .OnDelete(DeleteBehavior.SetNull);
+
+            //للتعديل في المقريشن
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes()
+                .SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+        }
 
 
     }
