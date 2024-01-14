@@ -25,6 +25,12 @@ namespace EFEClore.Models
         public int departmentId { get; set;}
         public Department department { get; set; }
 
+        //علاقة مني
         public ICollection<StudentBook> Books { get; set; }
+        // عندما اريد ربط جدول ومايكونش موجود في الداتابيس يوجد طريقتين 1. فلونت اي بي أي 2.الداتا انتيشن
+        //1.Fluent api   2. Data Entition
+        //هنا طريقة الداتا انتيشن
+        // [NotMapped]
+        public ICollection<Attendence> attendences { get; set; }
     }
 }
