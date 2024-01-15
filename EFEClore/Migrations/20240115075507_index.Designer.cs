@@ -4,6 +4,7 @@ using EFEClore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFEClore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240115075507_index")]
+    partial class index
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,9 +24,6 @@ namespace EFEClore.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.HasSequence<int>("DeliveryOrder")
-                .StartsAt(101L);
 
             modelBuilder.Entity("EFEClore.Models.Attendence", b =>
                 {
@@ -67,11 +67,6 @@ namespace EFEClore.Migrations
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("DeliveryOrder")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValueSql("Next Value For DeliveryOrder");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -206,10 +201,7 @@ namespace EFEClore.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
-                        .IsUnique()
-                        .HasDatabaseName("IX-my-index")
-                        .HasFilter("Name is not null");
+                    b.HasIndex("Name");
 
                     b.HasIndex("departmentId");
 
@@ -240,31 +232,6 @@ namespace EFEClore.Migrations
                     b.HasIndex("studentId");
 
                     b.ToTable("StudentBooks");
-                });
-
-            modelBuilder.Entity("EFEClore.Models.Uniform", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("DeliveryOrder")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValueSql("Next Value For DeliveryOrder");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("uniforms");
                 });
 
             modelBuilder.Entity("EFEClore.Models.Attendence", b =>

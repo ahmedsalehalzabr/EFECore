@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,6 +10,11 @@ using System.Threading.Tasks;
 
 namespace EFEClore.Models
 {
+    //عمل الاندكس يساعد على الوصول الى البيانات في قاعدة البيانات
+    //[Index("Name")]
+    //[Index("Name", "Email")]لاكثر من فلد
+    // عمل اندكس يونيك يعني فريد ماينفش يتكرر الاسم في الجداول 
+    //[Index("Name", IsUnique = true)]
     public class Student
     {
         [Key]
